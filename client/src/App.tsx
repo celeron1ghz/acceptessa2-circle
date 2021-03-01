@@ -126,6 +126,19 @@ const InputField: React.FC<{
         break;
 
 
+      case "checkbox":
+        elem = <div className={classes.join(" ")}>
+          {
+            Object.entries(column.values).map(([idx, label]) =>
+              <label key={idx}>
+                <input type="checkbox" name={id} value={idx} onChange={onChangeSelectHandler} /> {label}&nbsp;&nbsp;
+              </label>
+            )
+          }
+        </div>;
+        break;
+
+
       case "textarea":
         elem = <textarea
           className={classes.join(" ")}
@@ -180,6 +193,7 @@ function App() {
       errors[key] = true;
       delete validValues[key];
     }
+
     setErrors({ ...errors });
     setValidValues({ ...validValues });
   }, [errors, validValues]);
@@ -224,7 +238,9 @@ function App() {
         {
           inputAllValid
             ? <Button block variant="primary">確認</Button>
-            : <Button block variant="secondary" disabled>未入力または入力内容が正しくない項目があります {validInputPercentage}%</Button>
+            : <Button block variant="secondary" disabled>
+              あと {allColumnsCount - validInputCount}個の項目を入力してください。
+              </Button>
         }
       </Col>
     </Container >
