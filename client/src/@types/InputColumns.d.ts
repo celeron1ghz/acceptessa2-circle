@@ -1,4 +1,4 @@
-interface CircleInputColumnConfig {
+interface CircleInputFieldConfig {
     column_name: string;
     type: string;
     label: string;
