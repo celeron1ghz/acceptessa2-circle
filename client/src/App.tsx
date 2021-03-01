@@ -4,22 +4,8 @@ import { Container, Row, Col, Alert, Button, Badge } from 'react-bootstrap';
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css"
 
-interface Columns {
-  column_name: string;
-  type: string;
-  label: string;
-  description: string;
-  required?: boolean;
-  values: FormValues;
-  validator: (value: string) => boolean,
-}
-
-interface FormValues {
-  [key: string]: string;
-}
-
 const CircleInputField: React.FC<{
-  column: Columns,
+  column: InputColumns,
   onValueChange?: (key: string, value: string) => void,
   onValidate: (key: string, value: string, valid: boolean) => void,
 }> = ({
@@ -48,7 +34,7 @@ const CircleInputField: React.FC<{
   };
 
 const InputField: React.FC<{
-  column: Columns,
+  column: InputColumns,
   onValueChange?: (key: string, value: string) => void,
   onValidate: (key: string, value: string, valid: boolean) => void,
 }> = ({
@@ -174,7 +160,7 @@ const InputField: React.FC<{
   }
 
 function App() {
-  const [columns, setColumns] = useState<Array<Columns>>([]);
+  const [columns, setColumns] = useState<Array<InputColumns>>([]);
   const [errors, setErrors] = useState<Array<boolean>>([]);
   const [validValues, setValidValues] = useState<FormValues>({})
 
