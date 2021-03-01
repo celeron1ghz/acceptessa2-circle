@@ -5,42 +5,13 @@ import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css"
 
 const CircleInputField: React.FC<{
-  column: InputColumns,
+  column: CircleInputColumnConfig,
   onValueChange?: (key: string, value: string) => void,
   onValidate: (key: string, value: string, valid: boolean) => void,
 }> = ({
   column,
   onValueChange,
   onValidate,
-}) => {
-    return <tr>
-      <td style={{ width: "15vw" }}>
-        {column.label}
-        <br />
-        {
-          column.required
-            ? <Badge variant="danger">必須</Badge>
-            : <Badge variant="info">任意</Badge>
-        }
-      </td>
-      <td>
-        {<InputField
-          column={column}
-          onValueChange={onValueChange}
-          onValidate={onValidate}
-        />}
-      </td>
-    </tr>
-  };
-
-const InputField: React.FC<{
-  column: InputColumns,
-  onValueChange?: (key: string, value: string) => void,
-  onValidate: (key: string, value: string, valid: boolean) => void,
-}> = ({
-  column,
-  onValueChange,
-  onValidate
 }) => {
     const id = column.column_name;
     const ref = useRef<string>("");
@@ -105,7 +76,7 @@ const InputField: React.FC<{
             Object.entries(column.values).map(([idx, label]) =>
               <label key={idx}>
                 <input type="radio" name={id} value={idx} onChange={onChangeSelectHandler} /> {label}&nbsp;&nbsp;
-              </label>
+            </label>
             )
           }
         </div>;
@@ -118,7 +89,7 @@ const InputField: React.FC<{
             Object.entries(column.values).map(([idx, label]) =>
               <label key={idx}>
                 <input type="checkbox" name={id} value={idx} onChange={onChangeSelectHandler} /> {label}&nbsp;&nbsp;
-              </label>
+            </label>
             )
           }
         </div>;
@@ -144,23 +115,35 @@ const InputField: React.FC<{
         />
     }
 
-    return <>
-      {elem}
-      {
-        column.description &&
-        <div className="text-muted">! {column.description}</div>
-      }
-      {
-        error &&
-        <span key={id} className="text-danger">
-          {error && "error"}
-        </span>
-      }
-    </>;
-  }
+    return <tr>
+      <td style={{ width: "15vw" }}>
+        {column.label}
+        <br />
+        {
+          column.required
+            ? <Badge variant="danger">必須</Badge>
+            : <Badge variant="info">任意</Badge>
+        }
+      </td>
+      <td>
+        {elem}
+        {
+          column.description &&
+          <div className="text-muted">! {column.description}</div>
+        }
+        {
+          error &&
+          <span key={id} className="text-danger">
+            {error && "error"}
+          </span>
+        }
+      </td>
+    </tr>
+  };
+
 
 function App() {
-  const [columns, setColumns] = useState<Array<InputColumns>>([]);
+  const [columns, setColumns] = useState<Array<CircleInputColumnConfig>>([]);
   const [errors, setErrors] = useState<Array<boolean>>([]);
   const [validValues, setValidValues] = useState<FormValues>({})
 
