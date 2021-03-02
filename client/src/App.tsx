@@ -7,8 +7,48 @@ import './App.css';
 
 
 import InputPage from './pages/InputPage';
+import ConfirmPage from './pages/ConfirmPage';
+import CompletePage from './pages/CompletePage';
+
+const Menu: React.FC<{ mode: string, label: string }> = function ({ mode, label }) {
+  switch (mode) {
+    case "complete":
+      return (
+        <Col className="text-center text-muted">
+          <Icon.CheckCircleFill /> {label}
+        </Col>
+      );
+
+    case "now":
+      return (
+        <Col className="text-center text-primary">
+          <Icon.PencilFill /> {label}
+        </Col>
+      );
+
+    case "now_complete":
+      return (
+        <Col className="text-center text-primary">
+          <Icon.CheckCircleFill /> {label}
+        </Col>
+      );
+
+    case "":
+      return (
+        <Col className="text-center text-muted">
+          {label}
+        </Col>
+      );
+
+    default:
+      return (
+        <div>aa</div>
+      );
+  }
+}
 
 function App() {
+  const [mode, setMode] = useState<string>("input");
   const [columns, setColumns] = useState<Array<CircleInputFieldConfig>>([]);
   const [exhibition, setExhibition] = useState<FormValues>([]);
   const [errors, setErrors] = useState<FormValues>({});
@@ -60,9 +100,35 @@ function App() {
       .catch(e => alert(e));
   }, []);
 
-  const onSubmit = useCallback(() => {
+  const onInputComplete = useCallback(() => {
     console.log(validValues);
+    setMode("confirm");
   }, [validValues]);
+
+  const onConfirmComplete = function () {
+    setMode("complete");
+  };
+
+  let inputState: string, confirmState: string, completeState: string;
+
+  switch (mode) {
+    case "confirm":
+      inputState = "complete";
+      confirmState = "now";
+      completeState = "";
+      break
+
+    case "complete":
+      inputState = "complete";
+      confirmState = "complete";
+      completeState = "now_complete";
+      break
+
+    default:
+      inputState = "now";
+      confirmState = "";
+      completeState = "";
+  }
 
   return (
     <Container>
@@ -73,11 +139,29 @@ function App() {
         </Col>
       </Row>
       <Row>
-        <Col className="text-center text-primary"><Icon.PencilFill /> 入力</Col>
-        <Col className="text-center text-primary"><Icon.CheckCircleFill /> 確認</Col>
-        <Col className="text-center text-muted"><Icon.CheckCircleFill /> 完了</Col>
+        <Menu mode={inputState} label="入力" />
+        <Menu mode={confirmState} label="確認" />
+        <Menu mode={completeState} label="完了" />
       </Row>
-      <InputPage columns={columns} onValidate={validate} onSubmit={onSubmit} inputRemainCount={allErrorCount} />
+      {
+        mode === 'input' &&
+        <InputPage
+          columns={columns}
+          onValidate={validate}
+          onSubmit={onInputComplete}
+          inputRemainCount={allErrorCount}
+        />
+      }
+      {
+        mode === 'confirm' && <>
+          <ConfirmPage />
+        </>
+      }
+      {
+        mode === 'complete' && <>
+          <CompletePage />
+        </>
+      }
     </Container>
 
   );
