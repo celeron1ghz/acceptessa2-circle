@@ -5,7 +5,7 @@ import * as Icon from 'react-bootstrap-icons';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
 
-import CircleInputField from './component/CircleInputField';
+
 import InputPage from './pages/InputPage';
 
 function App() {
@@ -14,7 +14,6 @@ function App() {
   const [errors, setErrors] = useState<FormValues>({});
   const [validValues, setValidValues] = useState<FormValues>({})
 
-  console.log(columns)
   const allErrorCount = columns.filter(c => {
     return (c.required && !validValues[c.column_name])
       || (!c.required && errors[c.column_name]);
@@ -37,7 +36,6 @@ function App() {
     fetch("/data/moge.json")
       .then(data => data.json())
       .then(data => {
-        console.log(data)
         for (const r of data.columns) {
           r.validator = (value: string) => {
             if (!r.required && !value) {
@@ -79,34 +77,7 @@ function App() {
         <Col className="text-center text-primary"><Icon.CheckCircleFill /> 確認</Col>
         <Col className="text-center text-muted"><Icon.CheckCircleFill /> 完了</Col>
       </Row>
-      <br />
-      <div className={"text-center"}>
-        ssss
-      </div>
-      <br />
-      <Col>
-        <table className="table table-condensed">
-          <tbody>
-            {
-              columns.map(col =>
-                <CircleInputField
-                  key={col.column_name}
-                  column={col}
-                  onValidate={validate}
-                />
-              )
-            }
-          </tbody>
-        </table>
-        {
-          allErrorCount === 0
-            ? <Button block variant="primary" onClick={onSubmit}>確認</Button>
-            : <Button block variant="secondary" disabled>
-              あと {allErrorCount}個の項目を入力してください。
-              </Button>
-        }
-      </Col>
-      <InputPage />
+      <InputPage columns={columns} onValidate={validate} onSubmit={onSubmit} inputRemainCount={allErrorCount} />
     </Container>
 
   );
