@@ -2,6 +2,22 @@ import React from 'react';
 import { Alert, Button, Col } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
 
+const TweetButton: React.FC<{
+  label: string,
+  message: string,
+}> = (params: FormValues) => {
+  return (
+    <Button
+      size="lg"
+      style={{ backgroundColor: "#1DA1F2", border: "0px" }}
+      href="https://twitter.com/intent/tweet?text=Hello%20world"
+      target="_blank"
+    >
+      <Icon.Twitter /> {params.label}
+    </Button>
+  )
+};
+
 const CompletePage: React.FC<{
 }> = ({
 }) => {
@@ -11,14 +27,7 @@ const CompletePage: React.FC<{
       </Alert>
 
       <Col className="text-center">
-        <Button
-          size="lg"
-          style={{ backgroundColor: "#1DA1F2", border: "0px" }}
-          href="https://google.co.jp"
-          target="_blank"
-        >
-          <Icon.Twitter /> ツイートする
-        </Button>
+        <TweetButton message="aaa" label="ツイートする" />
       </Col>
     </>;
   };
