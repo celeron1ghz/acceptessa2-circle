@@ -16,7 +16,7 @@ const InputPage: React.FC<{
     return <>
       <br />
       <div className={"text-center"}>
-        ssss
+        下記のフォームに入力してください。
       </div>
       <br />
       <Col>

@@ -105,8 +105,11 @@ function App() {
     setMode("confirm");
   }, [validValues]);
 
-  const onConfirmComplete = function () {
+  const onConfirmForward = function () {
     setMode("complete");
+  };
+  const onConfirmBack = function () {
+    setMode("input");
   };
 
   let inputState: string, confirmState: string, completeState: string;
@@ -154,7 +157,10 @@ function App() {
       }
       {
         mode === 'confirm' && <>
-          <ConfirmPage />
+          <ConfirmPage
+            onForward={onConfirmForward}
+            onBack={onConfirmBack}
+          />
         </>
       }
       {

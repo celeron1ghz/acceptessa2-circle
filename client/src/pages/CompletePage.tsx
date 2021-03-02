@@ -6,7 +6,11 @@ const CompletePage: React.FC<{
 }> = ({
 }) => {
     return <>
-      hello!
+      <br />
+      <div className={"text-center"}>
+        サークルの登録が完了しました。
+      </div>
+      <br />
     </>;
   };
 
