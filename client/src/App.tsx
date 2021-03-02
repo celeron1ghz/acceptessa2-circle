@@ -56,6 +56,10 @@ function App() {
       .catch(e => alert(e));
   }, []);
 
+  const onSubmit = useCallback(() => {
+    console.log(validValues);
+  }, [validValues]);
+
   return (
     <Container>
       <Row>
@@ -80,13 +84,13 @@ function App() {
         </table>
         {
           allErrorCount === 0
-            ? <Button block variant="primary">確認</Button>
+            ? <Button block variant="primary" onClick={onSubmit}>確認</Button>
             : <Button block variant="secondary" disabled>
               あと {allErrorCount}個の項目を入力してください。
               </Button>
         }
       </Col>
-    </Container >
+    </Container>
 
   );
 }

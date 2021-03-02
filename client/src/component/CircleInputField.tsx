@@ -29,7 +29,6 @@ const CircleInputField: React.FC<{
     //
     const onChangeSelectHandler = useCallback((e: React.ChangeEvent<any>) => {
       ref.current = e.target.value;
-      console.log(e.target.value)
       if (onValueChange) {
         onValueChange(id, e.target.value);
       }
@@ -58,6 +57,7 @@ const CircleInputField: React.FC<{
           className={classes.join(" ")}
           onChange={onChangeSelectHandler}
         >
+          <option value={""}>-選択してください-</option>
           {
             Object.entries(column.values).map(([idx, label]) =>
               <option key={idx} value={idx}>{label}</option>
