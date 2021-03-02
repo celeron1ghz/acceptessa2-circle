@@ -126,7 +126,7 @@ const CircleInputField: React.FC<{
         {elem}
         {
           column.description &&
-          <div className="text-muted">! {column.description}</div>
+          <div className="text-muted">{column.description}</div>
         }
         {
           error &&

@@ -8,22 +8,20 @@ import CircleInputField from './component/CircleInputField';
 
 function App() {
   const [columns, setColumns] = useState<Array<CircleInputFieldConfig>>([]);
-  const [errors, setErrors] = useState<Array<boolean>>([]);
+  const [errors, setErrors] = useState<FormValues>({});
   const [validValues, setValidValues] = useState<FormValues>({})
 
-  const allColumnsCount = columns.length;
-  const errorCount = Object.keys(errors).length;
-  const validInputCount = Object.keys(validValues).length;
-
-  const inputAllValid = errorCount === 0 && columns.length === validInputCount;
-  // const validInputPercentage = Math.ceil(validInputCount / allColumnsCount * 100);
+  const allErrorCount = columns.filter(c => {
+    return (c.required && !validValues[c.column_name])
+      || (!c.required && errors[c.column_name]);
+  }).length;
 
   const validate = useCallback((key, value, valid) => {
     if (valid) {
       delete errors[key];
       validValues[key] = value;
     } else {
-      errors[key] = true;
+      errors[key] = "1";
       delete validValues[key];
     }
 
@@ -37,8 +35,19 @@ function App() {
       .then(data => {
         for (const r of data) {
           r.validator = (value: string) => {
-            // console.log(r.column_name, "-", value)
-            return value === r.column_name;
+            if (!r.required && !value) {
+              return true;
+            }
+
+            switch (r.type) {
+              case "select":
+              case "radio":
+              case "checkbox":
+                return r.values[value];
+
+              default:
+                return value && value.length >= 5;
+            }
           }
         }
 
@@ -64,15 +73,16 @@ function App() {
                   key={col.column_name}
                   column={col}
                   onValidate={validate}
-                />)
+                />
+              )
             }
           </tbody>
         </table>
         {
-          inputAllValid
+          allErrorCount === 0
             ? <Button block variant="primary">確認</Button>
             : <Button block variant="secondary" disabled>
-              あと {allColumnsCount - validInputCount}個の項目を入力してください。
+              あと {allErrorCount}個の項目を入力してください。
               </Button>
         }
       </Col>
