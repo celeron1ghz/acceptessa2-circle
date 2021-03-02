@@ -1,3 +1,3 @@
 interface FormValues {
-    [key: string]: string;
+    [key: string]: any;
 }

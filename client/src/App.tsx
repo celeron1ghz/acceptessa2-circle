@@ -1,16 +1,20 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Container, Row, Col, Alert, Button } from 'react-bootstrap';
+import * as Icon from 'react-bootstrap-icons';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
 
 import CircleInputField from './component/CircleInputField';
+import InputPage from './pages/InputPage';
 
 function App() {
   const [columns, setColumns] = useState<Array<CircleInputFieldConfig>>([]);
+  const [exhibition, setExhibition] = useState<FormValues>([]);
   const [errors, setErrors] = useState<FormValues>({});
   const [validValues, setValidValues] = useState<FormValues>({})
 
+  console.log(columns)
   const allErrorCount = columns.filter(c => {
     return (c.required && !validValues[c.column_name])
       || (!c.required && errors[c.column_name]);
@@ -33,7 +37,8 @@ function App() {
     fetch("/data/moge.json")
       .then(data => data.json())
       .then(data => {
-        for (const r of data) {
+        console.log(data)
+        for (const r of data.columns) {
           r.validator = (value: string) => {
             if (!r.required && !value) {
               return true;
@@ -51,7 +56,8 @@ function App() {
           }
         }
 
-        setColumns(data);
+        setColumns(data.columns);
+        setExhibition(data.exhibition);
       })
       .catch(e => alert(e));
   }, []);
@@ -62,12 +68,22 @@ function App() {
 
   return (
     <Container>
+      <br />
       <Row>
-        <Col className="text-center text-primary">aa</Col>
-        <Col className="text-center text-primary">aa</Col>
-        <Col className="text-center text-primary">aa</Col>
+        <Col>
+          <Alert variant="info">{exhibition.exhibition_name} サークル参加申込フォーム</Alert>
+        </Col>
       </Row>
-      <Alert variant="info">hello</Alert>
+      <Row>
+        <Col className="text-center text-primary"><Icon.PencilFill /> 入力</Col>
+        <Col className="text-center text-primary"><Icon.CheckCircleFill /> 確認</Col>
+        <Col className="text-center text-muted"><Icon.CheckCircleFill /> 完了</Col>
+      </Row>
+      <br />
+      <div className={"text-center"}>
+        ssss
+      </div>
+      <br />
       <Col>
         <table className="table table-condensed">
           <tbody>
@@ -90,6 +106,7 @@ function App() {
               </Button>
         }
       </Col>
+      <InputPage />
     </Container>
 
   );
