@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Container, Row, Col, Alert, Button } from 'react-bootstrap';
+import { Container, Row, Col, Alert } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -142,9 +142,9 @@ function App() {
         </Col>
       </Row>
       <Row>
-        <Menu mode={inputState} label="入力" />
-        <Menu mode={confirmState} label="確認" />
-        <Menu mode={completeState} label="完了" />
+        <Menu mode={inputState} label="1. 入力" />
+        <Menu mode={confirmState} label="2. 確認" />
+        <Menu mode={completeState} label="3. 完了" />
       </Row>
       {
         mode === 'input' &&
@@ -156,17 +156,17 @@ function App() {
         />
       }
       {
-        mode === 'confirm' && <>
-          <ConfirmPage
-            onForward={onConfirmForward}
-            onBack={onConfirmBack}
-          />
-        </>
+        mode === 'confirm' &&
+        <ConfirmPage
+          validValues={validValues}
+          columns={columns}
+          onForward={onConfirmForward}
+          onBack={onConfirmBack}
+        />
       }
       {
-        mode === 'complete' && <>
-          <CompletePage />
-        </>
+        mode === 'complete' &&
+        <CompletePage />
       }
     </Container>
 

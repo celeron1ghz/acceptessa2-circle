@@ -113,7 +113,7 @@ const CircleInputField: React.FC<{
     }
 
     return <tr>
-      <td style={{ width: "15vw" }}>
+      <td style={{ width: "20vw" }}>
         {column.label}
         <br />
         {

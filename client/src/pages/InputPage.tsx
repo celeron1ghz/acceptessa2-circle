@@ -1,5 +1,7 @@
 import React from 'react';
-import { Col, Button } from 'react-bootstrap';
+import { Col, Button, Alert } from 'react-bootstrap';
+import * as Icon from 'react-bootstrap-icons';
+
 import CircleInputField from '../component/CircleInputField';
 
 const InputPage: React.FC<{
@@ -14,11 +16,9 @@ const InputPage: React.FC<{
   inputRemainCount,
 }) => {
     return <>
-      <br />
-      <div className={"text-center"}>
-        下記のフォームに入力してください。
-      </div>
-      <br />
+      <Alert variant="light" className="text-center">
+        <Icon.ExclamationTriangleFill /> 下記のフォームに入力してください。
+      </Alert>
       <Col>
         <table className="table table-condensed">
           <tbody>
@@ -35,7 +35,9 @@ const InputPage: React.FC<{
         </table>
         {
           inputRemainCount === 0
-            ? <Button block variant="primary" onClick={onSubmit}>確認</Button>
+            ? <Button block variant="primary" onClick={onSubmit}>
+              入力内容を確認する <Icon.ChevronRight />
+            </Button>
             : <Button block variant="secondary" disabled>
               あと {inputRemainCount}個の項目を入力してください。
             </Button>

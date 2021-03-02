@@ -1,16 +1,25 @@
 import React from 'react';
-import { Col, Button } from 'react-bootstrap';
-import CircleInputField from '../component/CircleInputField';
+import { Alert, Button, Col } from 'react-bootstrap';
+import * as Icon from 'react-bootstrap-icons';
 
 const CompletePage: React.FC<{
 }> = ({
 }) => {
     return <>
-      <br />
-      <div className={"text-center"}>
-        サークルの登録が完了しました。
-      </div>
-      <br />
+      <Alert variant="light" className="text-center">
+        <Icon.ExclamationTriangleFill /> サークルの登録が完了しました。
+      </Alert>
+
+      <Col className="text-center">
+        <Button
+          size="lg"
+          style={{ backgroundColor: "#1DA1F2", border: "0px" }}
+          href="https://google.co.jp"
+          target="_blank"
+        >
+          <Icon.Twitter /> ツイートする
+        </Button>
+      </Col>
     </>;
   };
 
