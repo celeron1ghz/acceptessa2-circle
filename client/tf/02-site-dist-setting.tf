@@ -29,15 +29,6 @@ resource "aws_cloudfront_distribution" "dist" {
     }
   }
 
-  origin {
-    origin_id   = "member"
-    domain_name = aws_s3_bucket.member.bucket_domain_name
-
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.member.cloudfront_access_identity_path
-    }
-  }
-
   # origin {
   #   origin_id   = "login"
   #   domain_name = local.login_endpoint
@@ -51,26 +42,6 @@ resource "aws_cloudfront_distribution" "dist" {
   #     origin_ssl_protocols     = ["TLSv1", "TLSv1.1", "TLSv1.2"]
   #   }
   # }
-
-  ordered_cache_behavior {
-    path_pattern           = "/member/*"
-    allowed_methods        = ["GET", "HEAD"]
-    cached_methods         = ["GET", "HEAD"]
-    target_origin_id       = "member"
-    min_ttl                = 864000
-    default_ttl            = 864000
-    max_ttl                = 864000
-    compress               = true
-    viewer_protocol_policy = "redirect-to-https"
-
-    forwarded_values {
-      query_string = true
-      headers      = ["Origin"]
-      cookies {
-        forward = "none"
-      }
-    }
-  }
 
   # ordered_cache_behavior {
   #   path_pattern           = "/login"
