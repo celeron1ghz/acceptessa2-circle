@@ -12,12 +12,12 @@ function App() {
   const eid = param.get('e');
   const token = param.get('t');
 
-  if (eid) {
-    return <Register />;
+  if (token) {
+    return <Register token={token} />;
   }
 
-  if (token) {
-    return <Check />;
+  if (eid) {
+    return <Check eid={eid} />;
   }
 
   return (

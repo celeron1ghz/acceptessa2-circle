@@ -43,7 +43,7 @@ const Menu: React.FC<{ mode: string, label: string }> = function ({ mode, label 
   }
 }
 
-function App() {
+const App: React.FC<{ token: string }> = ({ token }) => {
   const [mode, setMode] = useState<string>("input");
   const [columns, setColumns] = useState<Array<CircleInputFieldConfig>>([]);
   const [exhibition, setExhibition] = useState<FormValues>([]);
