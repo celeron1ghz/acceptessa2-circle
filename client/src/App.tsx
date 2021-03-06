@@ -1,14 +1,39 @@
 import React from 'react';
-import Root from './pages/register/Root';
+import { Container, Row, Col, Alert } from 'react-bootstrap';
+
+import Register from './pages/register/Root';
+import Check from './pages/check/Root';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
 
 function App() {
   const param = new URLSearchParams(window.location.search);
+  const eid = param.get('e');
+  const token = param.get('t');
+
+  if (eid) {
+    return <Register />;
+  }
+
+  if (token) {
+    return <Check />;
+  }
 
   return (
-    <Root />
+    <Container>
+      <br />
+      <Row>
+        <Col>
+          <Alert variant="danger">
+            <Alert.Heading>Error</Alert.Heading>
+            <p className="mb-0">
+              メールに記載されているよりリンクから再度アクセスしてください。
+            </p>
+          </Alert>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
