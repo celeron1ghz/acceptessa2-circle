@@ -2,9 +2,10 @@
 
 const aws = require('aws-sdk');
 const ddb = new aws.DynamoDB.DocumentClient();
-const r = require('rand-token');
+const rand = require('rand-token');
 
-const TABLE = "acceptessa2-circle-register";
+const REGISTER_TABLE = "acceptessa2-circle-register";
+const EXHIBITION_TABLE = "acceptessa2-exhibition";
 
 function log(event, status, error) {
   console.log({
@@ -19,8 +20,9 @@ function log(event, status, error) {
 module.exports.validate_mail = async (event) => {
   const param = event.queryStringParameters || {};
   const mail = param.mail;
+  const eid = param.e;
 
-  if (!mail) {
+  if (!mail || !eid) {
     log(event, "no_input");
     return { statusCode: 403, body: "error" };
   }
@@ -30,15 +32,25 @@ module.exports.validate_mail = async (event) => {
     return { statusCode: 403, body: "error" };
   }
 
+  const e = await ddb.get({ TableName: EXHIBITION_TABLE, Key: { id: eid } }).promise();
+  console.log(e);
+
+  if (!e.Item) {
+    log(event, "no_exhibition");
+    return { statusCode: 403, body: "error" };
+  }
+
   const ttl = Math.ceil(new Date().getTime() / 1000) + 3600; // 1 hour
-  const token = r.generate(128);
-  const ret = await ddb
-    .put({ TableName: TABLE, Item: { token, mail, ttl } })
+  const token = rand.generate(128);
+  const exhibition = e.Item;
+
+  const r = await ddb
+    .put({ TableName: REGISTER_TABLE, Item: { token, mail, eid: exhibition.id, ttl } })
     .promise()
     .catch(err => err);
 
-  if (ret instanceof Error) {
-    log(event, "dynamodb_error", ret);
+  if (r instanceof Error) {
+    log(event, "dynamodb_error", r);
     return { statusCode: 403, body: "error" };
   }
 
@@ -56,7 +68,7 @@ module.exports.check_mail = async (event) => {
   }
 
   const ret = await ddb
-    .get({ TableName: TABLE, Key: { token } })
+    .get({ TableName: REGISTER_TABLE, Key: { token } })
     .promise()
     .catch(err => err);
 
@@ -66,5 +78,5 @@ module.exports.check_mail = async (event) => {
   }
 
   log(event, "success");
-  return { statusCode: 200, body: "OK" };
+  return { statusCode: 200, body: ret.Item.eid };
 };
