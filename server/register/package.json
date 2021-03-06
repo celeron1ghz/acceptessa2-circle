@@ -1,0 +1,14 @@
+{
+  "name": "acceptessa2-circle-api-register",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "rand-token": "^1.0.1"
+  }
+}
