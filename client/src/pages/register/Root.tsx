@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Container, Row, Col, Alert } from 'react-bootstrap';
+import { Row, Col, Alert } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
 
 import InputPage from '../register/InputPage';

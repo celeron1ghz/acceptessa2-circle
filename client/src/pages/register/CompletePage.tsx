@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert, Button, Col } from 'react-bootstrap';
-import * as Icon from 'react-bootstrap-icons';
+import { ExclamationTriangleFill, Twitter } from 'react-bootstrap-icons';
 
 const TweetButton: React.FC<{
   label: string,
@@ -13,7 +13,7 @@ const TweetButton: React.FC<{
       href="https://twitter.com/intent/tweet?text=Hello%20world"
       target="_blank"
     >
-      <Icon.Twitter /> {params.label}
+      <Twitter /> {params.label}
     </Button>
   )
 };
@@ -23,7 +23,7 @@ const CompletePage: React.FC<{
 ) => {
     return <>
       <Alert variant="light" className="text-center">
-        <Icon.ExclamationTriangleFill /> サークルの登録が完了しました。
+        <ExclamationTriangleFill /> サークルの登録が完了しました。
       </Alert>
 
       <Col className="text-center">

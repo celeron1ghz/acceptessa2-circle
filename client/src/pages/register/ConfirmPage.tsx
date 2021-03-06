@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert, Col, Button, Badge } from 'react-bootstrap';
-import * as Icon from 'react-bootstrap-icons';
+import { ExclamationTriangleFill, ChevronLeft, ChevronRight } from 'react-bootstrap-icons';
 
 const ConfirmPage: React.FC<{
   columns: Array<CircleInputFieldConfig>,
@@ -15,7 +15,7 @@ const ConfirmPage: React.FC<{
 }) => {
     return <>
       <Alert variant="light" className="text-primary text-center">
-        <Icon.ExclamationTriangleFill /> 入力内容を確認してください。
+        <ExclamationTriangleFill /> 入力内容を確認してください。
       </Alert>
       <Col>
         <table className="table table-condensed">
@@ -46,10 +46,10 @@ const ConfirmPage: React.FC<{
       </Col>
       <br />
       <Button block variant="primary" onClick={onForward}>
-        上記内容でサークル参加登録を行う <Icon.ChevronRight />
+        上記内容でサークル参加登録を行う <ChevronRight />
       </Button>
       <Button block variant="danger" onClick={onBack}>
-        <Icon.ChevronLeft /> 入力内容の修正を行う
+        <ChevronLeft /> 入力内容の修正を行う
       </Button>
     </>;
   };
