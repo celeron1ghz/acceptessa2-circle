@@ -30,9 +30,10 @@ module.exports.validate_mail = async (event) => {
     return { statusCode: 403, body: "error" };
   }
 
+  const ttl = Math.ceil(new Date().getTime() / 1000) + 3600; // 1 hour
   const token = r.generate(128);
   const ret = await ddb
-    .put({ TableName: TABLE, Item: { token, mail } })
+    .put({ TableName: TABLE, Item: { token, mail, ttl } })
     .promise()
     .catch(err => err);
 
