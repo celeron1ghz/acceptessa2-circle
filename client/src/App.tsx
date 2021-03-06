@@ -13,16 +13,23 @@ function App() {
   const token = param.get('t');
 
   if (token) {
-    return <Register token={token} />;
+    return (
+      <Container className="mt-3">
+        <Register token={token} />
+      </Container>
+    );
   }
 
   if (eid) {
-    return <Check eid={eid} />;
+    return (
+      <Container className="mt-3">
+        <Check eid={eid} />
+      </Container>
+    );
   }
 
   return (
-    <Container>
-      <br />
+    <Container className="mt-3">
       <Row>
         <Col>
           <Alert variant="danger">

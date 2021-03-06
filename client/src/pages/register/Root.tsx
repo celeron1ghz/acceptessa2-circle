@@ -130,8 +130,7 @@ const App: React.FC<{ token: string }> = ({ token }) => {
   }
 
   return (
-    <Container>
-      <br />
+    <>
       <Row>
         <Col>
           <Alert variant="info">{exhibition.exhibition_name} サークル参加申込フォーム</Alert>
@@ -164,7 +163,7 @@ const App: React.FC<{ token: string }> = ({ token }) => {
         mode === 'complete' &&
         <CompletePage />
       }
-    </Container>
+    </>
   );
 }
 
