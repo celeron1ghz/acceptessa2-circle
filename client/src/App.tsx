@@ -48,6 +48,8 @@ const Menu: React.FC<{ mode: string, label: string }> = function ({ mode, label 
 }
 
 function App() {
+  const param = new URLSearchParams(window.location.search);
+
   const [mode, setMode] = useState<string>("input");
   const [columns, setColumns] = useState<Array<CircleInputFieldConfig>>([]);
   const [exhibition, setExhibition] = useState<FormValues>([]);
@@ -58,19 +60,6 @@ function App() {
     return (c.required && !validValues[c.column_name])
       || (!c.required && errors[c.column_name]);
   }).length;
-
-  const validate = useCallback((key, value, valid) => {
-    if (valid) {
-      delete errors[key];
-      validValues[key] = value;
-    } else {
-      errors[key] = "1";
-      delete validValues[key];
-    }
-
-    setErrors({ ...errors });
-    setValidValues({ ...validValues });
-  }, [errors, validValues]);
 
   useEffect(() => {
     fetch("/data/moge.json")
@@ -99,6 +88,19 @@ function App() {
       })
       .catch(e => alert(e));
   }, []);
+
+  const validate = useCallback((key, value, valid) => {
+    if (valid) {
+      delete errors[key];
+      validValues[key] = value;
+    } else {
+      errors[key] = "1";
+      delete validValues[key];
+    }
+
+    setErrors({ ...errors });
+    setValidValues({ ...validValues });
+  }, [errors, validValues]);
 
   const onInputComplete = useCallback(() => {
     console.log(validValues);
