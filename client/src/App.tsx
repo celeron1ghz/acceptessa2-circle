@@ -1,11 +1,11 @@
 import React from 'react';
-import { Container, Row, Col, Alert } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
-import Register from './pages/register/Root';
-import Check from './pages/check/Root';
+import RegisterRoot from './pages/register/Root';
+import CheckRoot from './pages/check/Root';
+import ErrorPage from './component/ErrorPage';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
-import './App.css';
 
 function App() {
   const param = new URLSearchParams(window.location.search);
@@ -15,7 +15,7 @@ function App() {
   if (token) {
     return (
       <Container className="mt-3">
-        <Register token={token} />
+        <RegisterRoot token={token} />
       </Container>
     );
   }
@@ -23,25 +23,12 @@ function App() {
   if (eid) {
     return (
       <Container className="mt-3">
-        <Check eid={eid} />
+        <CheckRoot eid={eid} />
       </Container>
     );
   }
 
-  return (
-    <Container className="mt-3">
-      <Row>
-        <Col>
-          <Alert variant="danger">
-            <Alert.Heading>Error</Alert.Heading>
-            <p className="mb-0">
-              メールに記載されているよりリンクから再度アクセスしてください。
-            </p>
-          </Alert>
-        </Col>
-      </Row>
-    </Container>
-  );
+  return <ErrorPage message="メールに記載されているよりリンクから再度アクセスしてください。" />
 }
 
 export default App;
