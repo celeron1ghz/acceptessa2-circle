@@ -3,17 +3,18 @@ import React, { useState, useEffect } from 'react';
 import InputPage from '../check/InputPage';
 import CompletePage from '../check/CompletePage';
 import ErrorPage from '../../component/ErrorPage';
+import LoadingPage from '../../component/LoadingPage';
 
 const App: React.FC<{ eid: string }> = ({ eid }) => {
-  const [exhibition, setExhibition] = useState<FormValues | Error | null>(null);
+  const [exhibitionConfig, setExhibitionConfig] = useState<ExhibitionValues>({});
   const [complete, setComplete] = useState<boolean>(false);
 
   useEffect(() => {
     fetch(`/data/${eid}.json`)
       .then(data => data.json())
-      .then(data => setExhibition(data))
-      .catch(err => setExhibition(new Error(err)))
-  }, []);
+      .then(data => setExhibitionConfig({ ...data, loaded: true }))
+      .catch(err => setExhibitionConfig({ error: new Error(err), loaded: true }))
+  }, [eid]);
 
   const onSubmit = (mail: string) => {
     fetch("/validate?mail=" + mail)
@@ -26,23 +27,17 @@ const App: React.FC<{ eid: string }> = ({ eid }) => {
       });
   };
 
-  if (exhibition == null) {
-    return <div>Loading...</div>;
+  if (!exhibitionConfig.loaded) {
+    return <LoadingPage />;
   }
 
-  if (exhibition instanceof Error) {
+  if (exhibitionConfig.error) {
     return <ErrorPage message="指定された即売会は存在しないか、現在サークル申し込みを受け付けていません。" />
   }
 
-  return (
-    <>
-      {
-        complete
-          ? <CompletePage />
-          : <InputPage onSubmit={onSubmit} />
-      }
-    </>
-  );
+  return complete
+    ? <CompletePage />
+    : <InputPage onSubmit={onSubmit} />;
 }
 
 export default App;

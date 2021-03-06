@@ -27,7 +27,7 @@ const App: React.FC<{ onSubmit: (mail: string) => void, }> = ({ onSubmit }) => {
         <Col>
           <div className="text-muted">
             メールアドレスを入力し送信ボタンを押してください。<br />
-              入力したメールアドレスに対し、サークル登録を行うためのリンクを含むメールを送信させていただきます。<br />
+            入力したメールアドレスに対し、サークル登録を行うためのリンクを含むメールを送信させていただきます。<br />
           </div>
           <br />
           <div className="text-danger">
