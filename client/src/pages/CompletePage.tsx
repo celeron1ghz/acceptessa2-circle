@@ -19,8 +19,8 @@ const TweetButton: React.FC<{
 };
 
 const CompletePage: React.FC<{
-}> = ({
-}) => {
+}> = (
+) => {
     return <>
       <Alert variant="light" className="text-center">
         <Icon.ExclamationTriangleFill /> サークルの登録が完了しました。
