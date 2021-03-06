@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { Row, Col, Alert, Button } from 'react-bootstrap';
+import { Row, Col, Alert, Button, Spinner } from 'react-bootstrap';
 import { EnvelopeFill, ExclamationTriangleFill } from 'react-bootstrap-icons';
 
 const App: React.FC<{ onSubmit: (mail: string) => void, }> = ({ onSubmit }) => {
   const [mail, setMail] = useState<string>("");
-  const validInput = !mail.match(/^[\w+]{2,}@\w{3,}\.\w{2,}$/);
+  const [loading, setLoading] = useState<boolean>(false);
+  const validInput = mail.match(/^[\w+]{2,}@\w{3,}\.\w{2,}$/);
 
   const onChange = (e: React.ChangeEvent<any>) => {
     setMail(e.target.value);
   };
 
   const onClick = () => {
+    setLoading(true);
     onSubmit(mail);
   };
 
@@ -39,16 +41,26 @@ const App: React.FC<{ onSubmit: (mail: string) => void, }> = ({ onSubmit }) => {
         <Col>
           <input
             type="text"
-            className="form-control my-5"
+            className={[
+              "form-control mt-5 mb-3",
+              !mail
+                ? ""
+                : validInput
+                  ? 'is-valid'
+                  : 'is-invalid'
+            ].join(' ')}
             placeholder="メールアドレスを入力してください"
             onChange={onChange}
           />
           {
-
+            loading
+              ? <Button block variant="primary" disabled>
+                <Spinner animation="border" size="sm" /> 送信中...
+                </Button>
+              : <Button block variant="primary" disabled={!validInput} onClick={onClick}>
+                <EnvelopeFill /> 送信
+                </Button>
           }
-          <Button block variant="primary" disabled={validInput} onClick={onClick}>
-            <EnvelopeFill /> 送信
-            </Button>
         </Col>
       </Row>
     </>
