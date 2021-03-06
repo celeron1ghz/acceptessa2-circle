@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Button, Alert } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
 
-import CircleInputField from '../component/CircleInputField';
+import CircleInputField from '../../component/CircleInputField';
 
 const InputPage: React.FC<{
   columns: Array<CircleInputFieldConfig>,
