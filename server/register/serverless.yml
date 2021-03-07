@@ -17,10 +17,15 @@ provider:
           Action: [dynamodb:GetItem]
           Resource:
             - Fn::Join: [ ":", ["arn:aws:dynamodb", { Ref: AWS::Region }, { Ref: AWS::AccountId }, "table/acceptessa2-exhibition"]]
+        - Effect: Allow
+          Action: [lambda:InvokeFunction]
+          Resource:
+            - Fn::Join: [ ":", ["arn:aws:lambda", { Ref: AWS::Region }, { Ref: AWS::AccountId }, "function:acceptessa2-mail-sender"]]
 
 functions:
   validate:
     handler: handler.validate_mail
+    timeout: 10
     events:
       - httpApi:
           path: /validate
@@ -28,6 +33,7 @@ functions:
 
   check:
     handler: handler.check_mail
+    timeout: 10
     events:
       - httpApi:
           path: /check

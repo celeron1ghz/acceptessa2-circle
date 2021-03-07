@@ -1,3 +1,14 @@
-Hello
-
-<: $id :>
+%% my $url = "http://localhost:3000/?e=" ~ $exhibition.register_id ~ "&t=" ~ $token;
+<!DOCTYPE html>
+<!-- [[% $exhibition.exhibition_name %]] サークル参加登録を行ってください -->
+<html lang="ja">
+<body>
+[% $exhibition.exhibition_name %] 準備会です。<br/>
+<br/>
+下記リンクよりサークル情報の登録を行ってください。<br/>
+<a href="[% $url %]">[% $url %]</a><br/>
+<br/>
+※現時点でサークル参加の登録は完了していません。<br/>
+※上記リンクは1時間経過すると利用できなくなります。<br/>
+</body>
+</html>

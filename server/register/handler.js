@@ -2,6 +2,7 @@
 
 const aws = require('aws-sdk');
 const ddb = new aws.DynamoDB.DocumentClient();
+const lambda = new aws.Lambda();
 const rand = require('rand-token');
 
 const REGISTER_TABLE = "acceptessa2-circle-register";
@@ -33,7 +34,6 @@ module.exports.validate_mail = async (event) => {
   }
 
   const e = await ddb.get({ TableName: EXHIBITION_TABLE, Key: { id: eid } }).promise();
-  console.log(e);
 
   if (!e.Item) {
     log(event, "no_exhibition");
@@ -53,6 +53,18 @@ module.exports.validate_mail = async (event) => {
     log(event, "dynamodb_error", r);
     return { statusCode: 403, body: "error" };
   }
+
+  const from = e.mail_from || 'noreply@familiar-life.info';
+
+  await lambda.invokeAsync({
+    FunctionName: 'acceptessa2-mail-sender',
+    InvokeArgs: JSON.stringify({
+      template: 'circle-register/register_complete.tt',
+      from,
+      to: mail,
+      data: { exhibition, token, mail }
+    })
+  }).promise();
 
   log(event, "success");
   return { statusCode: 200, body: "OK" };
