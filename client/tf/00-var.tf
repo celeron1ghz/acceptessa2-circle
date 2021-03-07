@@ -1,5 +1,6 @@
 locals {
   appid = "acceptessa2"
+  # register_endpoint = ""
 }
 
 provider "aws" {
