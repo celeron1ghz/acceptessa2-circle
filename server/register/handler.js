@@ -40,7 +40,7 @@ module.exports.validate_mail = async (event) => {
     return { statusCode: 403, body: "error" };
   }
 
-  const ttl = Math.ceil(new Date().getTime() / 1000) + 3600; // 1 hour
+  const ttl = Math.ceil(new Date().getTime() / 1000) + 60 * 60 * 12; // 12 hour
   const token = rand.generate(32);
   const exhibition = e.Item;
 
