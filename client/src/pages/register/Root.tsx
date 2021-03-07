@@ -187,7 +187,7 @@ const App: React.FC<{ accessId: string, token: string }> = ({ token, accessId })
       }
       {
         mode === 'complete' &&
-        <CompletePage />
+        <CompletePage exhibition={exhibitionConfig.exhibition} />
       }
     </>
   );

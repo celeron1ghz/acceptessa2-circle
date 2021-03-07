@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Row, Col, Alert, Button, Spinner } from 'react-bootstrap';
-import { EnvelopeFill, ExclamationTriangleFill } from 'react-bootstrap-icons';
+import { EnvelopeFill, InfoCircleFill } from 'react-bootstrap-icons';
 
 const App: React.FC<{ exhibition: Exhibition, onSubmit: (mail: string) => void, }> = ({ exhibition, onSubmit }) => {
   const [mail, setMail] = useState<string>("");
@@ -33,9 +33,9 @@ const App: React.FC<{ exhibition: Exhibition, onSubmit: (mail: string) => void, 
           </div>
           <br />
           <div className="text-danger">
-            <ExclamationTriangleFill />
-              下記の送信ボタンを押下しただけではサークル参加申し込みは完了しません。<br />
-              メールに記載されたリンクからサークル情報の入力を行ってください。
+            <InfoCircleFill />
+            下記の送信ボタンを押下しただけではサークル参加申し込みは完了しません。<br />
+             メールに記載されたリンクからサークル情報の入力を行ってください。
           </div>
         </Col>
       </Row>
