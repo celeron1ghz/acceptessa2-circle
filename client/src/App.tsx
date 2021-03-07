@@ -12,10 +12,10 @@ function App() {
   const eid = param.get('e');
   const token = param.get('t');
 
-  if (token) {
+  if (eid && token) {
     return (
       <Container className="mt-3">
-        <RegisterRoot token={token} />
+        <RegisterRoot accessId={eid} token={token} />
       </Container>
     );
   }

@@ -45,7 +45,7 @@ const Menu: React.FC<{ mode: string, label: string }> = function ({ mode, label 
   }
 }
 
-const App: React.FC<{ token: string }> = ({ token }) => {
+const App: React.FC<{ accessId: string, token: string }> = ({ token, accessId }) => {
   const [exhibitionConfig, setExhibitionConfig] = useState<ExhibitionValues | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [mode, setMode] = useState<string>("input");
@@ -53,13 +53,18 @@ const App: React.FC<{ token: string }> = ({ token }) => {
   const [validValues, setValidValues] = useState<FormValues>({})
 
   useEffect(() => {
-    fetch("/check?t=" + token)
-      .then(data => data.text())
-      .then(data => console.log(data))
+    (async () => {
+      try {
+        const ret = await fetch(`/data/${accessId}.json`);
+        if (!ret.ok) {
+          throw new Error("指定された即売会は存在しないか、現在サークル申し込みを受け付けていません。");
+        }
 
-    fetch("/data/moge.json")
-      .then(data => data.json())
-      .then(data => {
+        const data = await ret.json().catch(err => null);
+        if (!data) {
+          throw new Error("指定された即売会は存在しないか、現在サークル申し込みを受け付けていません。");
+        }
+
         for (const r of data.columns) {
           r.validator = (value: string) => {
             if (!r.required && !value) {
@@ -78,10 +83,17 @@ const App: React.FC<{ token: string }> = ({ token }) => {
           }
         }
 
-        setExhibitionConfig({ ...data, loaded: true });
-      })
-      .catch(err => setError(new Error(err)))
-  }, []);
+        const ret2 = await fetch("/check?t=" + token);
+        if (!ret2.ok) {
+          throw new Error("メールに記載されているよりリンクから再度アクセスしてください。");
+        }
+
+        setExhibitionConfig(data);
+      } catch (error) {
+        setError(error);
+      }
+    })();
+  }, [accessId, token]);
 
   const validate = useCallback((key, value, valid) => {
     if (valid) {
@@ -98,17 +110,17 @@ const App: React.FC<{ token: string }> = ({ token }) => {
 
   const onInputComplete = useCallback(() => {
     setMode("confirm");
-  }, [validValues]);
+  }, []);
 
-  const onConfirmForward = function () {
+  const onConfirmForward = useCallback(() => {
     setMode("complete");
-  };
-  const onConfirmBack = function () {
+  }, []);
+  const onConfirmBack = useCallback(() => {
     setMode("input");
-  };
+  }, []);
 
   if (error) {
-    return <ErrorPage message="指定された即売会は存在しないか、現在サークル申し込みを受け付けていません。" />
+    return <ErrorPage message={error.message} />
   }
 
   if (!exhibitionConfig) {
