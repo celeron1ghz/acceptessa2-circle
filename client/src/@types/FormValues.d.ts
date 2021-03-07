@@ -4,7 +4,7 @@ interface FormValues {
 
 interface ExhibitionValues {
     exhibition?: { id: string; exhibition_name: string; }
-    columns?: Array<FormValues>;
+    columns?: Array<CircleInputFieldConfig>;
     loaded?: boolean;
     error?: Error;
 }
