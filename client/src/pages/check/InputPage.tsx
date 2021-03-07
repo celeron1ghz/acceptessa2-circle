@@ -5,7 +5,7 @@ import { EnvelopeFill, ExclamationTriangleFill } from 'react-bootstrap-icons';
 const App: React.FC<{ exhibition: Exhibition, onSubmit: (mail: string) => void, }> = ({ exhibition, onSubmit }) => {
   const [mail, setMail] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const validInput = mail.match(/^[\w+]{2,}@\w{3,}\.\w{2,}$/);
+  const validInput = mail.match(/^[\w-+]{2,}@[\w-]{3,}\.[\w-]{2,}$/);
 
   const onChange = (e: React.ChangeEvent<any>) => {
     setMail(e.target.value);
