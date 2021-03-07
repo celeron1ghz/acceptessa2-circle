@@ -2,7 +2,7 @@ import React from 'react';
 import { Alert, Row, Col } from 'react-bootstrap';
 import { EnvelopeFill } from 'react-bootstrap-icons';
 
-const CompletePage: React.FC<{}> = () => {
+const CompletePage: React.FC<{ exhibition: Exhibition }> = ({ exhibition }) => {
   return <>
     <Row>
       <Col>

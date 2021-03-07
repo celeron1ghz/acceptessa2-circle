@@ -18,18 +18,16 @@ const TweetButton: React.FC<{
   )
 };
 
-const CompletePage: React.FC<{
-}> = (
-) => {
-    return <>
-      <Alert variant="light" className="text-center">
-        <ExclamationTriangleFill /> サークルの登録が完了しました。
+const CompletePage: React.FC<{}> = () => {
+  return <>
+    <Alert variant="light" className="text-center">
+      <ExclamationTriangleFill /> サークルの登録が完了しました。
       </Alert>
 
-      <Col className="text-center">
-        <TweetButton message="aaa" label="ツイートする" />
-      </Col>
-    </>;
-  };
+    <Col className="text-center">
+      <TweetButton message="aaa" label="ツイートする" />
+    </Col>
+  </>;
+};
 
 export default CompletePage;

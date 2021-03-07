@@ -46,12 +46,17 @@ const Menu: React.FC<{ mode: string, label: string }> = function ({ mode, label 
 }
 
 const App: React.FC<{ token: string }> = ({ token }) => {
-  const [exhibitionConfig, setExhibitionConfig] = useState<ExhibitionValues>({});
+  const [exhibitionConfig, setExhibitionConfig] = useState<ExhibitionValues | null>(null);
+  const [error, setError] = useState<Error | null>(null);
   const [mode, setMode] = useState<string>("input");
   const [errors, setErrors] = useState<FormValues>({});
   const [validValues, setValidValues] = useState<FormValues>({})
 
   useEffect(() => {
+    fetch("/check?t=" + token)
+      .then(data => data.text())
+      .then(data => console.log(data))
+
     fetch("/data/moge.json")
       .then(data => data.json())
       .then(data => {
@@ -75,7 +80,7 @@ const App: React.FC<{ token: string }> = ({ token }) => {
 
         setExhibitionConfig({ ...data, loaded: true });
       })
-      .catch(err => setExhibitionConfig({ error: new Error(err), loaded: true }))
+      .catch(err => setError(new Error(err)))
   }, []);
 
   const validate = useCallback((key, value, valid) => {
@@ -102,12 +107,12 @@ const App: React.FC<{ token: string }> = ({ token }) => {
     setMode("input");
   };
 
-  if (!exhibitionConfig.loaded) {
-    return <LoadingPage />;
+  if (error) {
+    return <ErrorPage message="指定された即売会は存在しないか、現在サークル申し込みを受け付けていません。" />
   }
 
-  if (exhibitionConfig.error) {
-    return <ErrorPage message="指定された即売会は存在しないか、現在サークル申し込みを受け付けていません。" />
+  if (!exhibitionConfig) {
+    return <LoadingPage />;
   }
 
   let inputState: string, confirmState: string, completeState: string;
@@ -131,24 +136,17 @@ const App: React.FC<{ token: string }> = ({ token }) => {
       completeState = "";
   }
 
-  const allErrorCount = exhibitionConfig.columns
-    ? exhibitionConfig.columns.filter(c => {
-      return (c.required && !validValues[c.column_name])
-        || (!c.required && errors[c.column_name]);
-    }).length
-    : 0;
+  const allErrorCount = exhibitionConfig.columns.filter(c => {
+    return (c.required && !validValues[c.column_name])
+      || (!c.required && errors[c.column_name]);
+  }).length;
 
   return (
     <>
       <Row>
         <Col>
           <Alert variant="info">
-            {
-              exhibitionConfig.exhibition
-                ? exhibitionConfig.exhibition.exhibition_name
-                : ""
-            }
-            サークル参加申込フォーム
+            {exhibitionConfig.exhibition.exhibition_name} サークル参加申込フォーム
           </Alert>
         </Col>
       </Row>
@@ -160,7 +158,7 @@ const App: React.FC<{ token: string }> = ({ token }) => {
       {
         mode === 'input' &&
         <InputPage
-          columns={exhibitionConfig.columns || []}
+          columns={exhibitionConfig.columns}
           onValidate={validate}
           onSubmit={onInputComplete}
           inputRemainCount={allErrorCount}
@@ -170,7 +168,7 @@ const App: React.FC<{ token: string }> = ({ token }) => {
         mode === 'confirm' &&
         <ConfirmPage
           validValues={validValues}
-          columns={exhibitionConfig.columns || []}
+          columns={exhibitionConfig.columns}
           onForward={onConfirmForward}
           onBack={onConfirmBack}
         />

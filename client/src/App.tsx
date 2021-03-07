@@ -23,7 +23,7 @@ function App() {
   if (eid) {
     return (
       <Container className="mt-3">
-        <CheckRoot eid={eid} />
+        <CheckRoot accessId={eid} />
       </Container>
     );
   }

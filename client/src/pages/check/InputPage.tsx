@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Row, Col, Alert, Button, Spinner } from 'react-bootstrap';
 import { EnvelopeFill, ExclamationTriangleFill } from 'react-bootstrap-icons';
 
-const App: React.FC<{ onSubmit: (mail: string) => void, }> = ({ onSubmit }) => {
+const App: React.FC<{ exhibition: Exhibition, onSubmit: (mail: string) => void, }> = ({ exhibition, onSubmit }) => {
   const [mail, setMail] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const validInput = mail.match(/^[\w+]{2,}@\w{3,}\.\w{2,}$/);
@@ -20,7 +20,9 @@ const App: React.FC<{ onSubmit: (mail: string) => void, }> = ({ onSubmit }) => {
     <>
       <Row>
         <Col>
-          <Alert variant="info"><EnvelopeFill /> メールアドレス確認 入力</Alert>
+          <Alert variant="info">
+            <EnvelopeFill /> {exhibition.exhibition_name} メールアドレス確認 入力
+          </Alert>
         </Col>
       </Row>
       <Row>

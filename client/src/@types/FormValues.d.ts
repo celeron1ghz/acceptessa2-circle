@@ -2,9 +2,12 @@ interface FormValues {
     [key: string]: any;
 }
 
+interface Exhibition {
+    id: string;
+    exhibition_name: string;
+}
+
 interface ExhibitionValues {
-    exhibition?: { id: string; exhibition_name: string; }
-    columns?: Array<CircleInputFieldConfig>;
-    loaded?: boolean;
-    error?: Error;
+    exhibition: Exhibition;
+    columns: Array<CircleInputFieldConfig>;
 }
