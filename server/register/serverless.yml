@@ -7,13 +7,16 @@ provider:
   lambdaHashingVersion: 20201221
   stage: dev
   region: ap-northeast-1
-
   iam:
     role:
       statements:
         - Effect: Allow
           Action: [dynamodb:GetItem, dynamodb:PutItem, dynamodb:DeleteItem]
           Resource: { Fn::GetAtt: [RegisterTable, Arn] }
+        - Effect: Allow
+          Action: [dynamodb:GetItem]
+          Resource:
+            - Fn::Join: [ ":", ["arn:aws:dynamodb", { Ref: AWS::Region }, { Ref: AWS::AccountId }, "table/acceptessa2-exhibition"]]
 
 functions:
   validate:
