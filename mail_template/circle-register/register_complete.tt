@@ -1,4 +1,4 @@
-%% my $url = "http://localhost:3000/?e=" ~ $exhibition.register_id ~ "&t=" ~ $token;
+%% my $url = "http://circle.familiar-life.info/?e=" ~ $exhibition.register_id ~ "&t=" ~ $token;
 <!DOCTYPE html>
 <!-- [[% $exhibition.exhibition_name %]] サークル参加登録を行ってください -->
 <html lang="ja">

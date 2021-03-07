@@ -41,7 +41,7 @@ module.exports.validate_mail = async (event) => {
   }
 
   const ttl = Math.ceil(new Date().getTime() / 1000) + 3600; // 1 hour
-  const token = rand.generate(128);
+  const token = rand.generate(32);
   const exhibition = e.Item;
 
   const r = await ddb
