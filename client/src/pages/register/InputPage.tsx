@@ -3,13 +3,16 @@ import { Col, Button, Alert } from 'react-bootstrap';
 import { InfoCircleFill, ChevronRight } from 'react-bootstrap-icons';
 import { Badge } from 'react-bootstrap';
 import { useForm, RegisterOptions, SubmitHandler } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const InputPage: React.FC<{
   columns: Array<CircleInputFieldConfig>,
+  validator: any,
   validValues: FormValues,
   onSubmit: SubmitHandler<FormValues>,
 }> = ({
   columns,
+  validator,
   validValues,
   onSubmit,
 }) => {
@@ -17,6 +20,7 @@ const InputPage: React.FC<{
       mode: "onChange",
       reValidateMode: "onChange",
       defaultValues: validValues,
+      resolver: yupResolver(validator),
     });
 
     useEffect(() => {
@@ -53,8 +57,7 @@ const InputPage: React.FC<{
                   }
 
                   const param: RegisterOptions = {};
-                  param.required = col.required;
-                  param.maxLength = 3;
+                  // param.required = col.required;
 
                   switch (col.type) {
                     case "select":
@@ -130,7 +133,7 @@ const InputPage: React.FC<{
                         {elem}
                         {
                           errors[name]
-                          && <span className="text-danger">error</span>
+                          && <span className="text-danger">{errors[name].message}</span>
                         }
                       </td>
                     </tr>

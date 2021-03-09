@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Row, Col, Alert } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
+import * as yup from "yup";
 
 import InputPage from '../register/InputPage';
 import ConfirmPage from '../register/ConfirmPage';
@@ -64,21 +65,35 @@ const App: React.FC<{ accessId: string, token: string }> = ({ token, accessId })
           throw new Error("指定された即売会は存在しないか、現在サークル申し込みを受け付けていません。");
         }
 
+        const config: YupConfig = {};
+
         for (const r of data.columns) {
-          r.validator = (value: string) => {
-            if (!r.required && !value) {
-              return true;
+          const name = r.column_name;
+          const constraints = r.constraints || [];
+          let v = yup.string();
+
+          for (const c of constraints) {
+            if (!c.length) {
+              continue;
             }
 
-            switch (r.type) {
-              case "select":
-              case "radio":
-              case "checkbox":
-                return r.values[value];
+            const type = c.shift();
 
-              default:
-                return value && value.length >= 5;
+            switch (type) {
+              case 'katakana':
+                v = v.matches(/^[ァ-ンヴー]*$/, { message: "カナで入力してください" });
+                break;
+
+              case 'url':
+                v = v.url();
+                break;
+
+              case 'number':
+                v = v.matches(/^\d+$/, { message: "正の数値で入力してください" });
+                break;
             }
+
+            config[name] = v;
           }
         }
 
@@ -86,6 +101,8 @@ const App: React.FC<{ accessId: string, token: string }> = ({ token, accessId })
         if (!ret2.ok) {
           throw new Error("メールに記載されているよりリンクから再度アクセスしてください。");
         }
+
+        data.validator = yup.object().shape(config);
 
         setExhibitionConfig(data);
       } catch (error) {
@@ -154,6 +171,7 @@ const App: React.FC<{ accessId: string, token: string }> = ({ token, accessId })
         <InputPage
           validValues={validValues}
           columns={exhibitionConfig.columns}
+          validator={exhibitionConfig.validator}
           onSubmit={onInputComplete}
         />
       }
