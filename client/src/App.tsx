@@ -14,7 +14,7 @@ function App() {
 
   if (eid && token) {
     return (
-      <Container className="mt-3">
+      <Container className="my-4">
         <RegisterRoot accessId={eid} token={token} />
       </Container>
     );
@@ -22,7 +22,7 @@ function App() {
 
   if (eid) {
     return (
-      <Container className="mt-3">
+      <Container className="my-4">
         <CheckRoot accessId={eid} />
       </Container>
     );

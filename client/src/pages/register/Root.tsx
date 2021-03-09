@@ -49,7 +49,6 @@ const App: React.FC<{ accessId: string, token: string }> = ({ token, accessId })
   const [exhibitionConfig, setExhibitionConfig] = useState<ExhibitionValues | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [mode, setMode] = useState<string>("input");
-  const [errors, setErrors] = useState<FormValues>({});
   const [validValues, setValidValues] = useState<FormValues>({})
 
   useEffect(() => {
@@ -95,20 +94,8 @@ const App: React.FC<{ accessId: string, token: string }> = ({ token, accessId })
     })();
   }, [accessId, token]);
 
-  const validate = useCallback((key, value, valid) => {
-    if (valid) {
-      delete errors[key];
-      validValues[key] = value;
-    } else {
-      errors[key] = "1";
-      delete validValues[key];
-    }
-
-    setErrors({ ...errors });
-    setValidValues({ ...validValues });
-  }, [errors, validValues]);
-
-  const onInputComplete = useCallback(() => {
+  const onInputComplete = useCallback((data, a) => {
+    setValidValues(data);
     setMode("confirm");
   }, []);
 
@@ -148,15 +135,10 @@ const App: React.FC<{ accessId: string, token: string }> = ({ token, accessId })
       completeState = "";
   }
 
-  const allErrorCount = exhibitionConfig.columns.filter(c => {
-    return (c.required && !validValues[c.column_name])
-      || (!c.required && errors[c.column_name]);
-  }).length;
-
   return (
     <>
       <Row>
-        <Col>
+        <Col >
           <Alert variant="info">
             {exhibitionConfig.exhibition.exhibition_name} サークル参加申込フォーム
           </Alert>
@@ -170,10 +152,9 @@ const App: React.FC<{ accessId: string, token: string }> = ({ token, accessId })
       {
         mode === 'input' &&
         <InputPage
+          validValues={validValues}
           columns={exhibitionConfig.columns}
-          onValidate={validate}
           onSubmit={onInputComplete}
-          inputRemainCount={allErrorCount}
         />
       }
       {
