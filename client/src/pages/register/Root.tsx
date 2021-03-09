@@ -1,13 +1,14 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Row, Col, Alert } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
-import * as yup from "yup";
 
 import InputPage from '../register/InputPage';
 import ConfirmPage from '../register/ConfirmPage';
 import CompletePage from '../register/CompletePage';
 import ErrorPage from '../../component/ErrorPage';
 import LoadingPage from '../../component/LoadingPage';
+
+import createValidator from '../../component/Validator';
 
 const Menu: React.FC<{ mode: string, label: string }> = function ({ mode, label }) {
   switch (mode) {
@@ -65,44 +66,12 @@ const App: React.FC<{ accessId: string, token: string }> = ({ token, accessId })
           throw new Error("指定された即売会は存在しないか、現在サークル申し込みを受け付けていません。");
         }
 
-        const config: YupConfig = {};
-
-        for (const r of data.columns) {
-          const name = r.column_name;
-          const constraints = r.constraints || [];
-          let v = yup.string();
-
-          for (const c of constraints) {
-            if (!c.length) {
-              continue;
-            }
-
-            const type = c.shift();
-
-            switch (type) {
-              case 'katakana':
-                v = v.matches(/^[ァ-ンヴー]*$/, { message: "カナで入力してください" });
-                break;
-
-              case 'url':
-                v = v.url();
-                break;
-
-              case 'number':
-                v = v.matches(/^\d+$/, { message: "正の数値で入力してください" });
-                break;
-            }
-
-            config[name] = v;
-          }
-        }
-
         const ret2 = await fetch("/check?t=" + token);
         if (!ret2.ok) {
           throw new Error("メールに記載されているよりリンクから再度アクセスしてください。");
         }
 
-        data.validator = yup.object().shape(config);
+        data.validator = createValidator(data.columns);
 
         setExhibitionConfig(data);
       } catch (error) {
