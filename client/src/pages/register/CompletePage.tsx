@@ -19,7 +19,7 @@ const TweetButton: React.FC<{
 
     return (
       <Button
-        className="my-3"
+        className="my-3 px-4"
         size="lg"
         style={{ backgroundColor: "#1DA1F2", border: "0px" }}
         href={"https://twitter.com/intent/tweet?" + p.toString()}
@@ -48,7 +48,7 @@ const CompletePage: React.FC<{ exhibition: Exhibition }> = ({ exhibition }) => {
       引き続きサークルカットの登録を行ってください。<br />
       後でサークルカットの登録・差し替えを行うことも可能です。<br />
       登録内容の確認メールにリンクが記載されています。<br />
-      <Button className="my-3" variant="success">
+      <Button className="my-3 px-4" variant="success">
         <ImageFill /> サークルカットのアップロードページへ
       </Button>
     </Col>

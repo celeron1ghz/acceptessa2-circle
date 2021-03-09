@@ -62,7 +62,7 @@ const ConfirmPage: React.FC<{
         </table>
       </Col>
       <br />
-      <Button block variant="primary" onClick={onForward}>
+      <Button block size="lg" variant="primary" onClick={onForward} className="mb-4">
         上記内容でサークル参加登録を行う <ChevronRight />
       </Button>
       <Button block variant="danger" onClick={onBack}>

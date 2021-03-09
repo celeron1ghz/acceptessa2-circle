@@ -37,10 +37,10 @@ const InputPage: React.FC<{
     }).length;
 
     return <>
-      <Alert variant="light" className="text-center">
-        <InfoCircleFill /> 下記のフォームに入力してください。
-      </Alert>
       <Col>
+        <Alert variant="light" className="text-center">
+          <InfoCircleFill /> 下記のフォームに入力し、「入力内容を確認する」ボタンを押してください。
+        </Alert>
         <form onSubmit={handleSubmit(onSubmit)}>
           <table className="table table-condensed">
             <tbody>
@@ -57,7 +57,7 @@ const InputPage: React.FC<{
                   }
 
                   const param: RegisterOptions = {};
-                  // param.required = col.required;
+                  param.required = col.required;
 
                   switch (col.type) {
                     case "select":
@@ -120,7 +120,7 @@ const InputPage: React.FC<{
 
                   return (
                     <tr key={col.column_name}>
-                      <td style={{ width: "15vw" }}>
+                      <td style={{ width: "18vw" }} className={col.required ? 'text-danger' : 'text-info'}>
                         {col.label}
                         <br />
                         {
@@ -133,7 +133,7 @@ const InputPage: React.FC<{
                         {elem}
                         {
                           errors[name]
-                          && <span className="text-danger">{errors[name].message}</span>
+                          && <small className="text-danger">{errors[name].message}</small>
                         }
                       </td>
                     </tr>
@@ -144,10 +144,10 @@ const InputPage: React.FC<{
           </table>
           {
             allErrorCount === 0
-              ? <Button block variant="primary" type="submit">
+              ? <Button block size="lg" variant="primary" type="submit">
                 入力内容を確認する <ChevronRight />
               </Button>
-              : <Button block variant="secondary" disabled>
+              : <Button block size="lg" variant="secondary" disabled>
                 あと {allErrorCount}個の項目を入力してください。
             </Button>
           }
