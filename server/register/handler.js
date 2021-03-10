@@ -5,7 +5,7 @@ const ddb = new aws.DynamoDB.DocumentClient();
 const lambda = new aws.Lambda();
 const rand = require('rand-token');
 
-const REGISTER_TABLE = "acceptessa2-circle-register";
+const REGISTER_TABLE = "acceptessa2-login-token";
 const EXHIBITION_TABLE = "acceptessa2-exhibition";
 
 function log(event, status, error) {

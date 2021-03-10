@@ -14,7 +14,7 @@ provider:
       statements:
         - Effect: Allow
           Action: [dynamodb:GetItem, dynamodb:PutItem, dynamodb:DeleteItem]
-          Resource: { Fn::GetAtt: [RegisterTable, Arn] }
+            - Fn::Join: [ ":", ["arn:aws:dynamodb", { Ref: AWS::Region }, { Ref: AWS::AccountId }, "table/acceptessa2-login-token"]]
         - Effect: Allow
           Action: [dynamodb:GetItem]
           Resource:
@@ -51,16 +51,3 @@ resources:
     CheckLogGroup:
       Properties:
         RetentionInDays: 7
-
-    RegisterTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: acceptessa2-circle-register
-        AttributeDefinitions:
-          - { AttributeName: token, AttributeType: S }
-        KeySchema:
-          - { AttributeName: token, KeyType: HASH }
-        BillingMode: PAY_PER_REQUEST
-        TimeToLiveSpecification:
-          AttributeName: ttl
-          Enabled: true
