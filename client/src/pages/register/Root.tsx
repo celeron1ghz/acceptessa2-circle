@@ -66,7 +66,7 @@ const App: React.FC<{ accessId: string, token: string }> = ({ token, accessId })
           throw new Error("指定された即売会は存在しないか、現在サークル申し込みを受け付けていません。");
         }
 
-        const ret2 = await fetch("/check?t=" + token);
+        const ret2 = await fetch("/register/check?t=" + token);
         if (!ret2.ok) {
           throw new Error("メールに記載されているよりリンクから再度アクセスしてください。");
         }

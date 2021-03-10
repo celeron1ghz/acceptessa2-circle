@@ -64,7 +64,7 @@ resource "aws_cloudfront_distribution" "dist" {
 
   ordered_cache_behavior {
     target_origin_id       = "check"
-    path_pattern           = "/check"
+    path_pattern           = "/register/check"
     allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods         = ["GET", "HEAD"]
     min_ttl                = 0
@@ -98,7 +98,7 @@ resource "aws_cloudfront_distribution" "dist" {
 
   ordered_cache_behavior {
     target_origin_id       = "validate"
-    path_pattern           = "/validate"
+    path_pattern           = "/register/validate"
     allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods         = ["GET", "HEAD"]
     min_ttl                = 0

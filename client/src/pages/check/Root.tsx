@@ -28,7 +28,7 @@ const App: React.FC<{ accessId: string }> = ({ accessId }) => {
   const onSubmit = (mail: string) => {
     const eid = exhibitionConfig.exhibition.id;
 
-    fetch(`/validate?mail=${mail}&e=${eid}`)
+    fetch(`/register/validate?mail=${mail}&e=${eid}`)
       .then(data => {
         if (data.ok) {
           setComplete(true);
