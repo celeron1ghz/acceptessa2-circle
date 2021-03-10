@@ -45,7 +45,14 @@ module.exports.validate_mail = async (event) => {
   const exhibition = e.Item;
 
   const r = await ddb
-    .put({ TableName: REGISTER_TABLE, Item: { token, mail, eid: exhibition.id, ttl } })
+    .put({
+      TableName: REGISTER_TABLE, Item: {
+        token: "circle-" + token,
+        mail,
+        eid: exhibition.id,
+        ttl
+      }
+    })
     .promise()
     .catch(err => err);
 
@@ -80,7 +87,7 @@ module.exports.check_mail = async (event) => {
   }
 
   const ret = await ddb
-    .get({ TableName: REGISTER_TABLE, Key: { token } })
+    .get({ TableName: REGISTER_TABLE, Key: { token: "circle-" + token } })
     .promise()
     .catch(err => err);
 
