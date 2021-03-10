@@ -49,7 +49,7 @@ resource "aws_cloudfront_distribution" "dist" {
   }
 
   origin {
-    origin_id   = "check"
+    origin_id   = "register_api"
     domain_name = local.register_endpoint
 
     custom_origin_config {
@@ -63,8 +63,8 @@ resource "aws_cloudfront_distribution" "dist" {
   }
 
   ordered_cache_behavior {
-    target_origin_id       = "check"
-    path_pattern           = "/register/check"
+    target_origin_id       = "register_api"
+    path_pattern           = "/register/*"
     allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods         = ["GET", "HEAD"]
     min_ttl                = 0
@@ -82,39 +82,6 @@ resource "aws_cloudfront_distribution" "dist" {
     }
   }
 
-  origin {
-    origin_id   = "validate"
-    domain_name = local.register_endpoint
-
-    custom_origin_config {
-      http_port                = 443
-      https_port               = 443
-      origin_keepalive_timeout = 5
-      origin_protocol_policy   = "https-only"
-      origin_read_timeout      = 30
-      origin_ssl_protocols     = ["TLSv1", "TLSv1.1", "TLSv1.2"]
-    }
-  }
-
-  ordered_cache_behavior {
-    target_origin_id       = "validate"
-    path_pattern           = "/register/validate"
-    allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods         = ["GET", "HEAD"]
-    min_ttl                = 0
-    default_ttl            = 0
-    max_ttl                = 0
-    compress               = true
-    viewer_protocol_policy = "redirect-to-https"
-
-    forwarded_values {
-      query_string = true
-      headers      = ["Origin"]
-      cookies {
-        forward = "all"
-      }
-    }
-  }
 
   restrictions {
     geo_restriction {
