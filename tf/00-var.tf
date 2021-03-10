@@ -1,5 +1,6 @@
 locals {
   appid = "acceptessa2"
+  # apex_domain       = ""
   # register_endpoint = ""
 }
 
