@@ -3,7 +3,7 @@
 <!-- [[% $exhibition.exhibition_name %]] サークル参加登録を行ってください -->
 <html lang="ja">
 <body>
-[% $exhibition.exhibition_name %] 準備会です。<br/>
+[% $exhibition.exhibition_name %] にお申込みいただきありがとうございます。<br/>
 <br/>
 下記リンクよりサークル情報の登録を行ってください。<br/>
 <a href="[% $url %]">[% $url %]</a><br/>
